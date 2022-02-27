@@ -104,3 +104,4 @@ const createAnnoucement = () => {
 
 const similarAnnoucement = Array.from({length: ANNOUCEMENT_COUNT}, createAnnoucement);
 
+console.log(similarAnnoucement);
