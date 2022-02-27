@@ -102,6 +102,5 @@ const createAnnoucement = () => {
   };
 };
 
+// eslint-disable-next-line no-unused-vars
 const similarAnnoucement = Array.from({length: ANNOUCEMENT_COUNT}, createAnnoucement);
-
-console.log(similarAnnoucement);
