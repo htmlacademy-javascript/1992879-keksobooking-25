@@ -55,7 +55,7 @@ const PHOTOS_LIST = [
 
 const AVATAR_ADRESS = 'img/avatars/user/';
 const AVATAR_PHOTO_FORMAT = '.png';
-const ANNOUCEMENT_COUNT = 10;
+const ANNONCEMENT_COUNT = 10;
 
 const getRandomInteger = (min, max) => {
   const lowerValue = Math.min(min,max);
@@ -71,36 +71,39 @@ const getRandomFloatNumber = (min, max, fraction) => {
   return parseFloat(result.toFixed(fraction));
 };
 
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
 const checkAvatarNumber = (number) => (number >= 10) ? number : `0${number}`;
 
-const createAnnoucement = () => {
+const createAnnoncementOffer = () => {
   const locationLat = getRandomFloatNumber(35.65000, 35.70000, 5);
   const locationLng = getRandomFloatNumber(139.70000, 139.80000, 5);
   return {
-    author: {
-      avatar: `${AVATAR_ADRESS}${checkAvatarNumber(getRandomInteger(1, 11))}${AVATAR_PHOTO_FORMAT}`,
-    },
-    offer: {
-      title: getRandomArrayElement(TITLE_LIST),
-      address: `${locationLat}, ${locationLng}`,
-      price: getRandomInteger(1, 1000),
-      type: getRandomArrayElement(TYPE_LIST),
-      rooms: getRandomInteger(1, 5),
-      guests: getRandomInteger(1, 10),
-      checkin: getRandomArrayElement(CHECKIN_LIST),
-      checkout: getRandomArrayElement(CHECKOUT_LIST),
-      features: FEATURES_LIST.slice(getRandomInteger(0, FEATURES_LIST.length - 1), FEATURES_LIST.length),
-      description: getRandomArrayElement(DESCRIPTION_LIST),
-      photos: PHOTOS_LIST.slice(getRandomInteger(0, PHOTOS_LIST.length - 1), PHOTOS_LIST.length),
-      location: {
-        lat: locationLat,
-        lng: locationLng
-      }
-    },
+    title: getRandomArrayElement(TITLE_LIST),
+    address: `${locationLat}, ${locationLng}`,
+    price: getRandomInteger(1, 1000),
+    type: getRandomArrayElement(TYPE_LIST),
+    rooms: getRandomInteger(1, 5),
+    guests: getRandomInteger(1, 10),
+    checkin: getRandomArrayElement(CHECKIN_LIST),
+    checkout: getRandomArrayElement(CHECKOUT_LIST),
+    features: FEATURES_LIST.slice(getRandomInteger(0, FEATURES_LIST.length - 1), FEATURES_LIST.length),
+    description: getRandomArrayElement(DESCRIPTION_LIST),
+    photos: PHOTOS_LIST.slice(getRandomInteger(0, PHOTOS_LIST.length - 1), PHOTOS_LIST.length),
+    location: {
+      lat: locationLat,
+      lng: locationLng
+    }
   };
 };
 
+const createAnnoncement = () => ({
+  author: {
+    avatar: `${AVATAR_ADRESS}${checkAvatarNumber(getRandomInteger(1, 11))}${AVATAR_PHOTO_FORMAT}`,
+  },
+  offer: createAnnoncementOffer()
+});
+
+
 // eslint-disable-next-line no-unused-vars
-const similarAnnoucement = Array.from({length: ANNOUCEMENT_COUNT}, createAnnoucement);
+const similarAnnoncement = Array.from({length: ANNONCEMENT_COUNT}, createAnnoncement);
