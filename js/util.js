@@ -16,4 +16,12 @@ const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length 
 
 const checkAvatarNumber = (number) => (number >= 10) ? number : `0${number}`;
 
-export { getRandomInteger, getRandomFloatNumber, getRandomArrayElement, checkAvatarNumber };
+const fillTemplate = (element, value) => {
+  if (value) {
+    element.textContent = value;
+  } else {
+    element.remove();
+  }
+};
+
+export { getRandomInteger, getRandomFloatNumber, getRandomArrayElement, checkAvatarNumber, fillTemplate };
