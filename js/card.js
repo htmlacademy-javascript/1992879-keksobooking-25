@@ -26,7 +26,7 @@ const createFotoElement = (photoPath) => {
   return photoElement;
 };
 
-const renderCard = (({ author, offer }) => {
+const renderCard = ({ author, offer }) => {
   const { avatar } = author;
   const { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos } = offer;
   const cardElement = cardTemplate.cloneNode(true);
@@ -83,6 +83,6 @@ const renderCard = (({ author, offer }) => {
   }
 
   mapBlock.appendChild(cardElement);
-});
+};
 
 export { renderCard };
