@@ -24,4 +24,30 @@ const fillTemplate = (element, value) => {
   }
 };
 
-export { getRandomInteger, getRandomFloatNumber, getRandomArrayElement, checkAvatarNumber, fillTemplate };
+const getTemplateNode = (templateTag, contentTag) => {
+  const templateNode = document.querySelector(templateTag).content;
+  const contentNode = templateNode.querySelector(contentTag);
+  const clonedNode = contentNode.cloneNode(true);
+  return clonedNode;
+};
+
+const checkNodeAvailable = (template, key) => template.querySelector(key);
+
+const getTemplateNodesByMap = (template, elements) => {
+  const nodes = {};
+  for (const key in elements) {
+    nodes[key] = checkNodeAvailable(template, elements[key]);
+  }
+  return nodes;
+};
+
+export {
+  getRandomInteger,
+  getRandomFloatNumber,
+  getRandomArrayElement,
+  checkAvatarNumber,
+  fillTemplate,
+  getTemplateNode,
+  checkNodeAvailable,
+  getTemplateNodesByMap
+};

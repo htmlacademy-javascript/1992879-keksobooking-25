@@ -56,12 +56,37 @@ const CHECKIN_TEXT = 'Заезд после';
 const CHECKOUT_TEXT = 'выезд до';
 const FEATURE_CLASS_NAME = 'popup__feature--';
 
+const PHOTO_ATTRIBUTE = {
+  WIDTH: 'width',
+  HEIGHT: 'height',
+  ALT: 'alt'
+};
+
+const PHOTO_ATTRIBUTE_VALUE = {
+  WIDTH: '45',
+  HEIGHT: '40',
+  ALT: 'Фотография жилья'
+};
+
 const HOUSE_TYPES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец',
   hotel: 'Отель'
+};
+
+const ADS_CARDS_SELECTORS = {
+  title: '.popup__title',
+  address: '.popup__text--address',
+  price: '.popup__text--price',
+  type: '.popup__type',
+  capacity: '.popup__text--capacity',
+  time: '.popup__text--time',
+  features: '.popup__features',
+  description: '.popup__description',
+  photos: '.popup__photos',
+  avatar: '.popup__avatar'
 };
 
 export {
@@ -81,5 +106,8 @@ export {
   GUEST_TEXT,
   CHECKIN_TEXT,
   CHECKOUT_TEXT,
-  FEATURE_CLASS_NAME
+  FEATURE_CLASS_NAME,
+  PHOTO_ATTRIBUTE,
+  PHOTO_ATTRIBUTE_VALUE,
+  ADS_CARDS_SELECTORS
 };

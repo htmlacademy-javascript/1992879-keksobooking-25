@@ -1,15 +1,22 @@
-import { PRICE_FORMAT, HOUSE_TYPES, ROOMS_TEXT, GUEST_TEXT, CHECKIN_TEXT, CHECKOUT_TEXT, FEATURE_CLASS_NAME } from '/js/constants.js';
-import { fillTemplate } from '/js/util.js';
-
-const templateFragment = document.querySelector('#card').content;
-const cardTemplate = templateFragment.querySelector('.popup');
-const mapBlock = document.querySelector('#map-canvas');
+import {
+  PRICE_FORMAT,
+  HOUSE_TYPES,
+  ROOMS_TEXT,
+  GUEST_TEXT,
+  CHECKIN_TEXT,
+  CHECKOUT_TEXT,
+  FEATURE_CLASS_NAME,
+  PHOTO_ATTRIBUTE,
+  PHOTO_ATTRIBUTE_VALUE,
+  ADS_CARDS_SELECTORS
+} from '../js/constants.js';
+import { fillTemplate, getTemplateNode, getTemplateNodesByMap } from '../js/util.js';
 
 const renderFeatureList = (features, featureTemplateList) => {
   const modifierFeatures = features.map((feature) => `${FEATURE_CLASS_NAME}${feature}`);
 
   return featureTemplateList.forEach((element) => {
-    const modifierFeature = element.classList[1];
+    const [,modifierFeature] = element.classList;
     if (!modifierFeatures.includes(modifierFeature)) {
       element.remove();
     }
@@ -19,70 +26,61 @@ const renderFeatureList = (features, featureTemplateList) => {
 const createFotoElement = (photoPath) => {
   const photoElement = document.createElement('img');
   photoElement.className = 'popup__photo';
-  photoElement.setAttribute('width', '45');
-  photoElement.setAttribute('height', '40');
-  photoElement.setAttribute('alt', 'Фотография жилья');
+  photoElement.setAttribute(PHOTO_ATTRIBUTE.WIDTH, PHOTO_ATTRIBUTE_VALUE.WIDTH);
+  photoElement.setAttribute(PHOTO_ATTRIBUTE.HEIGHT, PHOTO_ATTRIBUTE_VALUE.HEIGHT);
+  photoElement.setAttribute(PHOTO_ATTRIBUTE.ALT, PHOTO_ATTRIBUTE_VALUE.ALT);
   photoElement.src = photoPath;
   return photoElement;
 };
 
-const renderCard = ({ author, offer }) => {
+const renderCard = ({ author, offer }, renderBlock) => {
   const { avatar } = author;
   const { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos } = offer;
-  const cardElement = cardTemplate.cloneNode(true);
+  const cardElement = getTemplateNode('#card', '.popup').cloneNode(true);
 
-  const cardTitle = cardElement.querySelector('.popup__title');
-  const cardTextAddress = cardElement.querySelector('.popup__text--address');
-  const cardTextPrice = cardElement.querySelector('.popup__text--price');
-  const cardType = cardElement.querySelector('.popup__type');
-  const cardCapacity = cardElement.querySelector('.popup__text--capacity');
-  const cardTime = cardElement.querySelector('.popup__text--time');
-  const featuresBlock = cardElement.querySelector('.popup__features');
-  const cardDescription = cardElement.querySelector('.popup__description');
-  const photosBlock = cardElement.querySelector('.popup__photos');
-  const cardAvatar = cardElement.querySelector('.popup__avatar');
+  const templatesNode = getTemplateNodesByMap(cardElement, ADS_CARDS_SELECTORS);
 
-  fillTemplate(cardTitle, title);
-  fillTemplate(cardTextAddress, address);
-  fillTemplate(cardTextPrice, `${price} ${PRICE_FORMAT}`);
-  fillTemplate(cardType, HOUSE_TYPES[type]);
-  fillTemplate(cardDescription, description);
+  fillTemplate(templatesNode.title, title);
+  fillTemplate(templatesNode.address, address);
+  fillTemplate(templatesNode.price, `${price} ${PRICE_FORMAT}`);
+  fillTemplate(templatesNode.type, HOUSE_TYPES[type]);
+  fillTemplate(templatesNode.description, description);
 
   if (rooms && guests) {
-    cardCapacity.textContent = `${rooms} ${ROOMS_TEXT} ${guests} ${GUEST_TEXT}`;
+    fillTemplate(templatesNode.capacity, `${rooms} ${ROOMS_TEXT} ${guests} ${GUEST_TEXT}`);
   } else {
-    cardCapacity.remove();
+    templatesNode.capacity.remove();
   }
 
   if (checkin && checkout) {
-    cardTime.textContent = `${CHECKIN_TEXT} ${checkin} ${CHECKOUT_TEXT} ${checkout}`;
+    fillTemplate(templatesNode.time,`${CHECKIN_TEXT} ${checkin} ${CHECKOUT_TEXT} ${checkout}`);
   } else {
-    cardTime.remove();
+    templatesNode.time.remove();
   }
 
   if (features) {
-    const featureTemplateList = featuresBlock.querySelectorAll('.popup__feature');
+    const featureTemplateList = templatesNode.features.querySelectorAll('.popup__feature');
     renderFeatureList(features, featureTemplateList);
   } else {
-    featuresBlock.remove();
+    templatesNode.features.remove();
   }
 
   if (photos) {
-    photosBlock.innerHTML = '';
+    templatesNode.photos.innerHTML = '';
     photos.forEach((photoPath) => {
-      photosBlock.appendChild(createFotoElement(photoPath));
+      templatesNode.photos.appendChild(createFotoElement(photoPath));
     });
   } else {
-    photosBlock.remove();
+    templatesNode.photos.remove();
   }
 
   if (avatar) {
-    cardAvatar.src = avatar;
+    templatesNode.avatar.src = avatar;
   } else {
-    cardAvatar.remove();
+    templatesNode.avatar.remove();
   }
 
-  mapBlock.appendChild(cardElement);
+  renderBlock.appendChild(cardElement);
 };
 
 export { renderCard };
