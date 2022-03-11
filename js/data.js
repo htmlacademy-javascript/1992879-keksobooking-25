@@ -1,4 +1,4 @@
-import { getRandomInteger, getRandomFloatNumber, getRandomArrayElement, checkAvatarNumber } from '/js/util.js';
+import { getRandomInteger, getRandomFloatNumber, getRandomArrayElement, checkAvatarNumber } from '../js/util.js';
 import {
   TITLE_LIST,
   TYPE_LIST,
@@ -10,9 +10,9 @@ import {
   AVATAR_ADRESS,
   AVATAR_PHOTO_FORMAT,
   ANNONCEMENT_COUNT
-} from '/js/constants.js';
+} from '../js/constants.js';
 
-const createAnnoncementOffer = () => {
+const createAnnouncementOffer = () => {
   const locationLat = getRandomFloatNumber(35.65000, 35.70000, 5);
   const locationLng = getRandomFloatNumber(139.70000, 139.80000, 5);
   return {
@@ -34,13 +34,13 @@ const createAnnoncementOffer = () => {
   };
 };
 
-const createAnnoncement = () => ({
+const createAnnouncement = () => ({
   author: {
     avatar: `${AVATAR_ADRESS}${checkAvatarNumber(getRandomInteger(1, 11))}${AVATAR_PHOTO_FORMAT}`,
   },
-  offer: createAnnoncementOffer()
+  offer: createAnnouncementOffer()
 });
 
-const similarAnnoncement = Array.from({length: ANNONCEMENT_COUNT}, createAnnoncement);
+const similarAnnouncement = Array.from({length: ANNONCEMENT_COUNT}, createAnnouncement);
 
-export { similarAnnoncement };
+export { similarAnnouncement };
