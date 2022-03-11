@@ -41,6 +41,12 @@ const getTemplateNodesByMap = (template, elements) => {
   return nodes;
 };
 
+const setDisabledElements = (elements, isDisabled) => {
+  elements.forEach((element) => {
+    element.disabled = isDisabled;
+  });
+};
+
 export {
   getRandomInteger,
   getRandomFloatNumber,
@@ -49,5 +55,6 @@ export {
   fillTemplate,
   getTemplateNode,
   checkNodeAvailable,
-  getTemplateNodesByMap
+  getTemplateNodesByMap,
+  setDisabledElements
 };
