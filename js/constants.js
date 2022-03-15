@@ -76,6 +76,16 @@ const HOUSE_TYPES = {
   hotel: 'Отель'
 };
 
+const HOUSE_MIN_PRICE_VALUE = {
+  flat: 1000,
+  bungalow: 0,
+  house: 5000,
+  palace: 10000,
+  hotel: 3000
+};
+
+const HOUSE_MAX_PRICE_VALUE = 100000;
+
 const ADS_CARDS_SELECTORS = {
   title: '.popup__title',
   address: '.popup__text--address',
@@ -87,6 +97,31 @@ const ADS_CARDS_SELECTORS = {
   description: '.popup__description',
   photos: '.popup__photos',
   avatar: '.popup__avatar'
+};
+
+const RoomsCapacityMap = {
+  '1': {
+    guests: ['1'],
+    messageError: 'Для 1 комнаты необходимо выбрать количество гостей: 1'
+  },
+  '2': {
+    guests: ['1', '2'],
+    messageError: 'Для 2 комнаты необходимо выбрать количество гостей: 1 или 2'
+  },
+  '3': {
+    guests: ['1', '2', '3'],
+    messageError: 'Для 3 комнат необходимо выбрать количество гостей: 1, 2 или 3'
+  },
+  '100': {
+    guests: ['0'],
+    messageError: 'Для 100 комнат необходимо выбрать: не для гостей'
+  }
+};
+
+const ERROR_VALIDATION_TEXT = {
+  TITLE: 'Заголовок объявления должен быть от 30 до 100 символов',
+  PRICE_MIN: 'Цена должна быть не менее',
+  PRICE_MAX: 'Цена должна быть не более'
 };
 
 export {
@@ -109,5 +144,9 @@ export {
   FEATURE_CLASS_NAME,
   PHOTO_ATTRIBUTE,
   PHOTO_ATTRIBUTE_VALUE,
-  ADS_CARDS_SELECTORS
+  ADS_CARDS_SELECTORS,
+  HOUSE_MIN_PRICE_VALUE,
+  HOUSE_MAX_PRICE_VALUE,
+  RoomsCapacityMap,
+  ERROR_VALIDATION_TEXT
 };

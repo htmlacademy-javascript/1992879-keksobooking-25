@@ -10,4 +10,4 @@ console.log(similarAnnouncement);
 
 renderCard(firstApartData, cardWrapper);
 
-inactiveState();
+// inactiveState();
