@@ -33,7 +33,7 @@ const createFotoElement = (photoPath) => {
   return photoElement;
 };
 
-const renderCard = ({ author, offer }, renderBlock) => {
+const renderCard = ({ author, offer }) => {
   const { avatar } = author;
   const { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos } = offer;
   const cardElement = getTemplateNode('#card', '.popup').cloneNode(true);
@@ -80,7 +80,7 @@ const renderCard = ({ author, offer }, renderBlock) => {
     templatesNode.avatar.remove();
   }
 
-  renderBlock.appendChild(cardElement);
+  return cardElement;
 };
 
 export { renderCard };
