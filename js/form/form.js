@@ -42,6 +42,8 @@ const validateTimeIn = () => {
   pristine.validate(timeOut);
 };
 
+const validatePrice = () => pristine.validate(priceField);
+
 pristine.addValidator(titleField, validateTitle, ERROR_VALIDATION_TEXT.TITLE);
 pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
 pristine.addValidator(priceField, validateMaxPrice, getMaxPriceErrorMessage);
@@ -60,4 +62,4 @@ announcementForm.addEventListener('submit', (event) => {
   pristine.validate();
 });
 
-export { houseTypeField, priceField, onPriceChange};
+export { houseTypeField, priceField, validatePrice };

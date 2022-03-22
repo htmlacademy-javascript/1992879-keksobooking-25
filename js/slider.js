@@ -1,5 +1,5 @@
 import { HOUSE_MIN_PRICE_VALUE } from '../js/form/form-constants.js';
-import { houseTypeField, priceField } from '../js/form/form.js';
+import { houseTypeField, priceField, validatePrice } from '../js/form/form.js';
 
 const sliderElement = document.querySelector('.ad-form__slider');
 
@@ -15,6 +15,7 @@ noUiSlider.create(sliderElement, {
 
 sliderElement.noUiSlider.on('update', (value) => {
   priceField.value = Math.round(value);
+  validatePrice();
 });
 
 houseTypeField.addEventListener('change', () => {
@@ -24,7 +25,6 @@ houseTypeField.addEventListener('change', () => {
       max: 100000,
     },
   });
-  sliderElement.noUiSlider.set(HOUSE_MIN_PRICE_VALUE[houseTypeField.value]);
 });
 
 
