@@ -42,12 +42,15 @@ const validateTimeIn = () => {
   pristine.validate(timeOut);
 };
 
+const validatePrice = () => pristine.validate(priceField);
+
 pristine.addValidator(titleField, validateTitle, ERROR_VALIDATION_TEXT.TITLE);
 pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
 pristine.addValidator(priceField, validateMaxPrice, getMaxPriceErrorMessage);
 pristine.addValidator(capacityField, validateRoomNumber, getRoomsNumberErrorMessage);
 
 houseTypeField.addEventListener('change', onPriceChange);
+priceField.addEventListener('change', onPriceChange);
 roomNumberField.addEventListener('change', () => {
   pristine.validate(capacityField);
 });
@@ -58,3 +61,5 @@ announcementForm.addEventListener('submit', (event) => {
   event.preventDefault();
   pristine.validate();
 });
+
+export { houseTypeField, priceField, validatePrice };
