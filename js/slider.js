@@ -31,3 +31,9 @@ houseTypeField.addEventListener('change', () => {
 priceField.addEventListener('change', (event) => {
   sliderElement.noUiSlider.set(event.currentTarget.value);
 });
+
+const resetSlider = () => {
+  sliderElement.noUiSlider.set(priceField.value);
+};
+
+export { resetSlider };

@@ -3,6 +3,7 @@ import { sendData } from '../api.js';
 import { mainPinMarker, setAddressFieldValue, map } from '../map.js';
 import { POPUP_MESSAGE } from '../constants.js';
 import { closeModalOnEscape } from '../util.js';
+import { resetSlider } from '../slider.js';
 
 const announcementForm = document.querySelector('.ad-form');
 const titleField = announcementForm.querySelector('#title');
@@ -100,6 +101,7 @@ const resetForm = () => {
   mainPinMarker.setLatLng([35.68281, 139.75949,]).update();
   setAddressFieldValue();
   map.closePopup();
+  resetSlider();
 };
 
 const setInitialState = () => {
