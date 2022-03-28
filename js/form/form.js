@@ -1,4 +1,8 @@
 import { HOUSE_MIN_PRICE_VALUE, HOUSE_MAX_PRICE_VALUE, RoomsCapacityMap, ERROR_VALIDATION_TEXT } from './form-constants.js';
+import { sendData } from '../api.js';
+import { mainPinMarker, setAddressFieldValue, map } from '../map.js';
+import { POPUP_MESSAGE } from '../constants.js';
+import { closeModalOnEscape } from '../util.js';
 
 const announcementForm = document.querySelector('.ad-form');
 const titleField = announcementForm.querySelector('#title');
@@ -8,6 +12,10 @@ const roomNumberField = announcementForm.querySelector('#room_number');
 const capacityField = announcementForm.querySelector('#capacity');
 const timeIn = announcementForm.querySelector('#timein');
 const timeOut = announcementForm.querySelector('#timeout');
+const elMain = document.querySelector('main');
+const adFormReset = document.querySelector('.ad-form__reset');
+let elError;
+let elSuccess;
 
 const pristine = new Pristine(announcementForm, {
   classTo: 'ad-form__element',
@@ -57,9 +65,68 @@ roomNumberField.addEventListener('change', () => {
 timeIn.addEventListener('change', validateTimeOut);
 timeOut.addEventListener('change', validateTimeIn);
 
-announcementForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  pristine.validate();
-});
+const errorHandler = (message) => () => {
+  const elErrorTemplate = document.querySelector('#error').content.querySelector('div.error');
+  elError = elErrorTemplate.cloneNode(true);
+  const elErrorMess = elError.querySelector('.error__message');
+  elErrorMess.innerText = message;
+  const elErrorButton = elError.querySelector('.error__button');
 
-export { houseTypeField, priceField, validatePrice };
+  elMain.insertBefore(elError, elMain.firstChild);
+  closeModalOnEscape(elError);
+  elErrorButton.addEventListener('click', () => {
+    elError.remove();
+  });
+  elError.addEventListener('click', () => {
+    elError.remove();
+  });
+};
+
+const successHandler = () => {
+  const elSuccessTemplate = document.querySelector('#success').content.querySelector('div.success');
+  elSuccess = elSuccessTemplate.cloneNode(true);
+  const elSuccessMessage = elSuccess.querySelector('.success__message');
+  elSuccessMessage.innerText = POPUP_MESSAGE.SUCCESS_FORM;
+
+  elMain.insertBefore(elSuccess, elMain.firstChild);
+  closeModalOnEscape(elSuccess);
+  elSuccess.addEventListener('click', () => {
+    elSuccess.remove();
+  });
+};
+
+const resetForm = () => {
+  announcementForm.reset();
+  mainPinMarker.setLatLng([35.68281, 139.75949,]).update();
+  setAddressFieldValue();
+  map.closePopup();
+};
+
+const setInitialState = () => {
+  resetForm();
+  successHandler();
+};
+
+adFormReset.addEventListener('click', resetForm);
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+  announcementForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(event.target);
+      sendData(
+        () => {
+          onSuccess();
+        },
+        () => {
+          onFail();
+        },
+        formData,
+      );
+    }
+  });
+};
+setUserFormSubmit(setInitialState, errorHandler(POPUP_MESSAGE.ERROR_FORM));
+
+export { houseTypeField, priceField, validatePrice, errorHandler };
