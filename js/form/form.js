@@ -2,7 +2,7 @@ import { HOUSE_MIN_PRICE_VALUE, HOUSE_MAX_PRICE_VALUE, RoomsCapacityMap, ERROR_V
 import { sendData } from '../api.js';
 import { mainPinMarker, setAddressFieldValue, map } from '../map.js';
 import { POPUP_MESSAGE } from '../constants.js';
-import { closeModalOnEscape } from '../util.js';
+import { getTemplateNode, isEscapeKey } from '../util.js';
 import { resetSlider } from '../slider.js';
 
 const announcementForm = document.querySelector('.ad-form');
@@ -66,34 +66,48 @@ roomNumberField.addEventListener('change', () => {
 timeIn.addEventListener('change', validateTimeOut);
 timeOut.addEventListener('change', validateTimeIn);
 
+const closeByEscapeHandler  =  (event) => {
+  if (isEscapeKey(event)) {
+    if (elError) {
+      elError.removeEventListener('keydown', closeByEscapeHandler );
+      elError.remove();
+    } else if(elSuccess) {
+      elSuccess.removeEventListener('keydown', closeByEscapeHandler );
+      elSuccess.remove();
+    }
+  }
+};
+
+const closeByClickHandler = () => {
+  if (elError) {
+    elError.removeEventListener('click', closeByClickHandler);
+    elError.remove();
+  } else if (elSuccess) {
+    elSuccess.removeEventListener('click', closeByClickHandler);
+    elSuccess.remove();
+  }
+};
+
 const errorHandler = (message) => () => {
-  const elErrorTemplate = document.querySelector('#error').content.querySelector('div.error');
-  elError = elErrorTemplate.cloneNode(true);
+  elError = getTemplateNode('#error', 'div.error');
   const elErrorMess = elError.querySelector('.error__message');
   elErrorMess.innerText = message;
   const elErrorButton = elError.querySelector('.error__button');
 
   elMain.insertBefore(elError, elMain.firstChild);
-  closeModalOnEscape(elError);
-  elErrorButton.addEventListener('click', () => {
-    elError.remove();
-  });
-  elError.addEventListener('click', () => {
-    elError.remove();
-  });
+  document.addEventListener('keydown', closeByEscapeHandler );
+  elErrorButton.addEventListener('click', closeByClickHandler);
+  elError.addEventListener('click', closeByClickHandler);
 };
 
 const successHandler = () => {
-  const elSuccessTemplate = document.querySelector('#success').content.querySelector('div.success');
-  elSuccess = elSuccessTemplate.cloneNode(true);
+  elSuccess = getTemplateNode('#success', 'div.success');
   const elSuccessMessage = elSuccess.querySelector('.success__message');
   elSuccessMessage.innerText = POPUP_MESSAGE.SUCCESS_FORM;
 
   elMain.insertBefore(elSuccess, elMain.firstChild);
-  closeModalOnEscape(elSuccess);
-  elSuccess.addEventListener('click', () => {
-    elSuccess.remove();
-  });
+  document.addEventListener('keydown', closeByEscapeHandler );
+  elSuccess.addEventListener('click', closeByClickHandler);
 };
 
 const resetForm = () => {
@@ -118,12 +132,8 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     if (isValid) {
       const formData = new FormData(event.target);
       sendData(
-        () => {
-          onSuccess();
-        },
-        () => {
-          onFail();
-        },
+        onSuccess,
+        onFail,
         formData,
       );
     }

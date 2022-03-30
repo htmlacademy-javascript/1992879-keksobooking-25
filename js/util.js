@@ -49,13 +49,7 @@ const setDisabledElements = (elements, isDisabled) => {
   });
 };
 
-const closeModalOnEscape = (element) => {
-  document.addEventListener('keydown', (e) => {
-    if (e.key === KEY_ESCAPE) {
-      element.remove();
-    }
-  });
-};
+const isEscapeKey = (event) => event.key === KEY_ESCAPE;
 
 export {
   getRandomInteger,
@@ -67,5 +61,5 @@ export {
   checkNodeAvailable,
   getTemplateNodesByMap,
   setDisabledElements,
-  closeModalOnEscape
+  isEscapeKey
 };
