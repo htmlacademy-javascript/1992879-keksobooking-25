@@ -36,7 +36,7 @@ const createFotoElement = (photoPath) => {
 const renderCard = ({ author, offer }) => {
   const { avatar } = author;
   const { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos } = offer;
-  const cardElement = getTemplateNode('#card', '.popup').cloneNode(true);
+  const cardElement = getTemplateNode('#card', '.popup');
 
   const templatesNode = getTemplateNodesByMap(cardElement, ADS_CARDS_SELECTORS);
 
