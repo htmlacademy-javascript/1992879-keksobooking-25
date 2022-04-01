@@ -51,6 +51,14 @@ const API_PATH = {
   ADD_ANNOUNCEMENT: 'https://25.javascript.pages.academy/keksobooking'
 };
 
+const SIMILAR_ANNOUNCEMENT_COUNT = 10;
+
+const HOUSE_PRICE_FIELD_VALUE = {
+  MIDDLE: 'middle',
+  LOW: 'low',
+  HIGH: 'high'
+};
+
 export {
   PRICE_FORMAT,
   HOUSE_TYPES,
@@ -64,5 +72,7 @@ export {
   ADS_CARDS_SELECTORS,
   POPUP_MESSAGE,
   KEY_ESCAPE,
-  API_PATH
+  API_PATH,
+  SIMILAR_ANNOUNCEMENT_COUNT,
+  HOUSE_PRICE_FIELD_VALUE
 };
