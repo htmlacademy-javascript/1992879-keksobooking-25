@@ -51,6 +51,15 @@ const setDisabledElements = (elements, isDisabled) => {
 
 const isEscapeKey = (event) => event.key === KEY_ESCAPE;
 
+const debounce = (callback, timeout) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeout);
+  };
+};
+
+
 export {
   getRandomInteger,
   getRandomFloatNumber,
@@ -61,5 +70,6 @@ export {
   checkNodeAvailable,
   getTemplateNodesByMap,
   setDisabledElements,
-  isEscapeKey
+  isEscapeKey,
+  debounce
 };
