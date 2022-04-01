@@ -1,6 +1,5 @@
 import { activeState, inactiveState } from '../js/form/form-helpers.js';
-import { similarAnnouncement } from './data.js';
-import { renderCard } from '../js/card.js';
+import { renderCard } from './card.js';
 
 const addressFild = document.querySelector('#address');
 
@@ -46,10 +45,28 @@ L.tileLayer (
   },
 ).addTo(map);
 
+const renderAnnouncements = (announcements) => {
+  announcements.forEach((announcement) => {
+    const marker = L.marker(
+      {
+        lat: announcement.location.lat,
+        lng: announcement.location.lng,
+      },
+      {
+        draggable: false,
+        icon: commonPinIcon,
+      });
+    marker.addTo(map)
+      .bindPopup(renderCard(announcement));
+  });
+};
+const setAddressFieldValue = () => {
+  addressFild.value = `${mainPinMarker.getLatLng().lat} ${mainPinMarker.getLatLng().lng}`;
+};
+
 
 mainPinMarker.addTo(map);
-
-addressFild.value = `${mainPinMarker.getLatLng().lat} ${mainPinMarker.getLatLng().lng}`;
+setAddressFieldValue();
 
 mainPinMarker.on('moveend', (event) => {
   const coordinate = event.target.getLatLng();
@@ -58,16 +75,4 @@ mainPinMarker.on('moveend', (event) => {
   addressFild.value = `${coordLat} ${coordLng}`;
 });
 
-similarAnnouncement.forEach((announcement) => {
-  const marker = L.marker(
-    {
-      lat: announcement.offer.location.lat,
-      lng: announcement.offer.location.lng,
-    },
-    {
-      draggable: false,
-      icon: commonPinIcon,
-    });
-  marker.addTo(map)
-    .bindPopup(renderCard(announcement));
-});
+export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map };

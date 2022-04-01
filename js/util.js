@@ -1,3 +1,5 @@
+import { KEY_ESCAPE } from '../js/constants.js';
+
 const getRandomInteger = (min, max) => {
   const lowerValue = Math.min(min,max);
   const upperValue = Math.max(min,max);
@@ -47,6 +49,8 @@ const setDisabledElements = (elements, isDisabled) => {
   });
 };
 
+const isEscapeKey = (event) => event.key === KEY_ESCAPE;
+
 export {
   getRandomInteger,
   getRandomFloatNumber,
@@ -56,5 +60,6 @@ export {
   getTemplateNode,
   checkNodeAvailable,
   getTemplateNodesByMap,
-  setDisabledElements
+  setDisabledElements,
+  isEscapeKey
 };
