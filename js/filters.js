@@ -1,4 +1,4 @@
-import { HOUSE_PRICE_FIELD_VALUE } from '../js/constants.js';
+import { HOUSE_PRICE_FIELD_VALUE, HOUSE_PRICE_DIAPASON_VALUE } from '../js/constants.js';
 
 const VALUE_ANY = 'any';
 const mapFilters = document.querySelector('.map__filters');
@@ -21,14 +21,32 @@ const houseTypeFilterHandler = ({offer: { type } }) => {
   return houseTypeFilter.value === VALUE_ANY ? true : type === houseTypeFilter.value;
 };
 
+const isMiddleCondition = (price) => {
+  const isMiddlePrice = housePriceFilter.value === HOUSE_PRICE_FIELD_VALUE.MIDDLE;
+  const isMiddleDiapason = price >= HOUSE_PRICE_DIAPASON_VALUE.LOW && price <= HOUSE_PRICE_DIAPASON_VALUE.HIGH;
+  return isMiddlePrice && isMiddleDiapason;
+};
+
+const isLowCondition = (price) => {
+  const isLowPrice =  housePriceFilter.value === HOUSE_PRICE_FIELD_VALUE.LOW;
+  const isLowDiapason = price < HOUSE_PRICE_DIAPASON_VALUE.LOW;
+  return isLowPrice && isLowDiapason;
+};
+
+const isHighCondition = (price) => {
+  const isHighPrice = housePriceFilter.value === HOUSE_PRICE_FIELD_VALUE.HIGH;
+  const isHighDiapason = price > HOUSE_PRICE_DIAPASON_VALUE.HIGH;
+  return isHighPrice && isHighDiapason;
+};
+
 const priceFilterHandler = ({offer: { price } }) => {
   if(!price) {
     return false;
   }
   return housePriceFilter.value === VALUE_ANY ? true : (
-    ((housePriceFilter.value === HOUSE_PRICE_FIELD_VALUE.MIDDLE) && (price >= 10000) && (price <= 50000)) ||
-    ((housePriceFilter.value === HOUSE_PRICE_FIELD_VALUE.LOW) && (price < 10000)) ||
-    ((housePriceFilter.value === HOUSE_PRICE_FIELD_VALUE.HIGH) && (price > 50000))
+    isMiddleCondition(price) ||
+    isLowCondition(price) ||
+    isHighCondition(price)
   );
 };
 
@@ -40,10 +58,10 @@ const roomsFilterHandler = ({offer: { rooms } }) => {
 };
 
 const guestsFilterHandler = ({offer: { guests } }) => {
-  if(!guests) {
-    return false;
+  if(guests >= 0) {
+    return houseGuestsFilter.value === VALUE_ANY ? true : guests === +houseGuestsFilter.value;
   }
-  return houseGuestsFilter.value === VALUE_ANY ? true : guests === +houseGuestsFilter.value;
+  return false;
 };
 
 const featuresFilterHandler = (filterCheckbox, {offer: { features } }) => {
@@ -53,9 +71,8 @@ const featuresFilterHandler = (filterCheckbox, {offer: { features } }) => {
   return filterCheckbox.checked ? features.includes(filterCheckbox.value) : true;
 };
 
-const announcementsFilterHandler =  (data) => {
-  const filteredDataByHouseType = data.slice().filter((announcement) =>
-    houseTypeFilterHandler(announcement) &&
+const announcementsFilterHandler =  (data) => data.slice().filter((announcement) =>
+  houseTypeFilterHandler(announcement) &&
     priceFilterHandler(announcement) &&
     roomsFilterHandler(announcement) &&
     guestsFilterHandler(announcement) &&
@@ -65,9 +82,6 @@ const announcementsFilterHandler =  (data) => {
     featuresFilterHandler(filterWasherCheckbox, announcement) &&
     featuresFilterHandler(filterElevatorCheckbox, announcement) &&
     featuresFilterHandler(filterConditionerCheckbox, announcement)
-  );
-
-  return filteredDataByHouseType;
-};
+);
 
 export { announcementsFilterHandler };
