@@ -2,10 +2,10 @@ import '../js/slider.js';
 import  { errorHandler } from '../js/form/form.js';
 import { renderAnnouncements, removeAllMarkers } from '../js/map.js';
 import { getData } from '../js/api.js';
-import '../js/avatar.js';
+import '../js/loader.js';
 import { POPUP_MESSAGE, SIMILAR_ANNOUNCEMENT_COUNT, RERENDER_DELAY } from '../js/constants.js';
 import { announcementsFilterHandler } from '../js/filters.js';
-import { debounce } from './util.js';
+import { debounce } from '../js/util.js';
 
 const filtersBlock = document.querySelector('.map__filters');
 let announcementList = [];

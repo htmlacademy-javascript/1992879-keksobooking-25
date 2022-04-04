@@ -84,4 +84,9 @@ const announcementsFilterHandler =  (data) => data.slice().filter((announcement)
     featuresFilterHandler(filterConditionerCheckbox, announcement)
 );
 
-export { announcementsFilterHandler };
+const resetAllFilters = () => {
+  mapFilters.reset();
+
+};
+
+export { announcementsFilterHandler, resetAllFilters };
