@@ -4,6 +4,7 @@ import { renderCard } from './card.js';
 const addressFild = document.querySelector('#address');
 
 const map = L.map('map-canvas');
+let mapMarkers  = [];
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -36,7 +37,7 @@ map.on('load', () => {
   .setView({
     lat: 35.68281,
     lng: 139.75949,
-  }, 10);
+  }, 12);
 
 L.tileLayer (
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -46,6 +47,7 @@ L.tileLayer (
 ).addTo(map);
 
 const renderAnnouncements = (announcements) => {
+  mapMarkers = [];
   announcements.forEach((announcement) => {
     const marker = L.marker(
       {
@@ -56,14 +58,21 @@ const renderAnnouncements = (announcements) => {
         draggable: false,
         icon: commonPinIcon,
       });
+    mapMarkers.push(marker);
     marker.addTo(map)
       .bindPopup(renderCard(announcement));
   });
 };
+
 const setAddressFieldValue = () => {
   addressFild.value = `${mainPinMarker.getLatLng().lat} ${mainPinMarker.getLatLng().lng}`;
 };
 
+const removeAllMarkers = () => {
+  mapMarkers.forEach((marker, index) => {
+    map.removeLayer(mapMarkers[index]);
+  });
+};
 
 mainPinMarker.addTo(map);
 setAddressFieldValue();
@@ -75,4 +84,4 @@ mainPinMarker.on('moveend', (event) => {
   addressFild.value = `${coordLat} ${coordLng}`;
 });
 
-export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map };
+export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map, removeAllMarkers };
