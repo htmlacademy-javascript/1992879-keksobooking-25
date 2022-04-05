@@ -33,7 +33,7 @@ priceField.addEventListener('change', (event) => {
 });
 
 const resetSlider = () => {
-  sliderElement.noUiSlider.set(priceField.value);
+  sliderElement.noUiSlider.set(HOUSE_MIN_PRICE_VALUE[houseTypeField.value]);
 };
 
 export { resetSlider };

@@ -22,6 +22,7 @@ const removePhotos = () => {
   }
 
   if (previewHousePhoto) {
+    previewHousePhoto.src = '';
     previewHousePhoto.style.display = 'none';
   }
 };

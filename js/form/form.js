@@ -143,6 +143,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     }
   });
 };
+
 setUserFormSubmit(setInitialState, errorHandler(POPUP_MESSAGE.ERROR_FORM));
 
 export { houseTypeField, priceField, validatePrice, errorHandler };
