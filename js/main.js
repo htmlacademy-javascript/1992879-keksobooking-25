@@ -1,10 +1,12 @@
 import '../js/slider.js';
 import  { errorHandler } from '../js/form/form.js';
-import { renderAnnouncements, removeAllMarkers } from '../js/map.js';
+import { inactiveState, activateMapFilters } from '../js/form/form-helpers.js';
+import { renderAnnouncements, removeAllMarkers, activateMap } from '../js/map.js';
 import { getData } from '../js/api.js';
+import '../js/loader.js';
 import { POPUP_MESSAGE, SIMILAR_ANNOUNCEMENT_COUNT, RERENDER_DELAY } from '../js/constants.js';
 import { announcementsFilterHandler } from '../js/filters.js';
-import { debounce } from './util.js';
+import { debounce } from '../js/util.js';
 
 const filtersBlock = document.querySelector('.map__filters');
 let announcementList = [];
@@ -15,12 +17,18 @@ const updateAnnouncements = () =>  {
   renderAnnouncements(filteredAnnouncement.slice(0, SIMILAR_ANNOUNCEMENT_COUNT));
 };
 
-getData((announcements) => {
-  announcementList = announcements;
-  renderAnnouncements(announcements.slice(0, SIMILAR_ANNOUNCEMENT_COUNT));
-},
-errorHandler(POPUP_MESSAGE.ERROR_LOAD_DATA)
-);
+const renderData = () => {
+  getData((announcements) => {
+    announcementList = announcements;
+    renderAnnouncements(announcements.slice(0, SIMILAR_ANNOUNCEMENT_COUNT));
+    activateMapFilters();
+  },
+  errorHandler(POPUP_MESSAGE.ERROR_LOAD_DATA)
+  );
+};
+
+inactiveState();
+activateMap(renderData);
 
 filtersBlock.addEventListener('change', debounce(updateAnnouncements, RERENDER_DELAY), true);
-
+filtersBlock.addEventListener('reset', debounce(updateAnnouncements, RERENDER_DELAY), true);

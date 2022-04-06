@@ -12,12 +12,15 @@ const inactiveState = () => {
   setDisabledElements(mapFiltersFormElements, true);
 };
 
+const activateMapFilters = () => {
+  mapFiltersForm.classList.remove('map__filters--disabled');
+};
+
 const activeState = () => {
   announcementForm.classList.remove('ad-form--disabled');
-  mapFiltersForm.classList.remove('map__filters--disabled');
   setDisabledElements(announcementFormElements, false);
   setDisabledElements(mapFiltersFormElements, false);
 };
 
-export { activeState, inactiveState };
+export { activeState, inactiveState, activateMapFilters };
 

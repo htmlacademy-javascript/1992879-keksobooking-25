@@ -1,4 +1,4 @@
-import { activeState, inactiveState } from '../js/form/form-helpers.js';
+import { activeState } from '../js/form/form-helpers.js';
 import { renderCard } from './card.js';
 
 const addressFild = document.querySelector('#address');
@@ -29,22 +29,23 @@ const mainPinMarker = L.marker(
   },
 );
 
-inactiveState();
+const activateMap = (success) => {
+  map.on('load', () => {
+    activeState();
+    success();
+  })
+    .setView({
+      lat: 35.68281,
+      lng: 139.75949,
+    }, 12);
 
-map.on('load', () => {
-  activeState();
-})
-  .setView({
-    lat: 35.68281,
-    lng: 139.75949,
-  }, 12);
-
-L.tileLayer (
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+  L.tileLayer (
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(map);
+};
 
 const renderAnnouncements = (announcements) => {
   mapMarkers = [];
@@ -84,4 +85,4 @@ mainPinMarker.on('moveend', (event) => {
   addressFild.value = `${coordLat} ${coordLng}`;
 });
 
-export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map, removeAllMarkers };
+export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map, removeAllMarkers, activateMap };

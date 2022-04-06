@@ -4,6 +4,8 @@ import { mainPinMarker, setAddressFieldValue, map } from '../map.js';
 import { POPUP_MESSAGE } from '../constants.js';
 import { getTemplateNode, isEscapeKey } from '../util.js';
 import { resetSlider } from '../slider.js';
+import { removePhotos } from '../loader.js';
+import { resetAllFilters } from '../filters.js';
 
 const announcementForm = document.querySelector('.ad-form');
 const titleField = announcementForm.querySelector('#title');
@@ -116,6 +118,8 @@ const resetForm = () => {
   setAddressFieldValue();
   map.closePopup();
   resetSlider();
+  removePhotos();
+  resetAllFilters();
 };
 
 const setInitialState = () => {
@@ -139,6 +143,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     }
   });
 };
+
 setUserFormSubmit(setInitialState, errorHandler(POPUP_MESSAGE.ERROR_FORM));
 
 export { houseTypeField, priceField, validatePrice, errorHandler };
