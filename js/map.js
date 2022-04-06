@@ -1,4 +1,4 @@
-import { activeState } from '../js/form/form-helpers.js';
+import { setActiveState } from '../js/form/form-helpers.js';
 import { renderCard } from './card.js';
 
 const addressFild = document.querySelector('#address');
@@ -31,7 +31,7 @@ const mainPinMarker = L.marker(
 
 const activateMap = (success) => {
   map.on('load', () => {
-    activeState();
+    setActiveState();
     success();
   })
     .setView({

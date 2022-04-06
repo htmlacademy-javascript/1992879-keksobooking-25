@@ -5,7 +5,7 @@ const mapFiltersFormElements  = mapFiltersForm.querySelectorAll('.map__filter');
 const announcementForm = document.querySelector('.ad-form');
 const announcementFormElements = announcementForm.querySelectorAll('.ad-form__element');
 
-const inactiveState = () => {
+const setInactiveState = () => {
   announcementForm.classList.add('ad-form--disabled');
   mapFiltersForm.classList.add('map__filters--disabled');
   setDisabledElements(announcementFormElements, true);
@@ -16,11 +16,11 @@ const activateMapFilters = () => {
   mapFiltersForm.classList.remove('map__filters--disabled');
 };
 
-const activeState = () => {
+const setActiveState = () => {
   announcementForm.classList.remove('ad-form--disabled');
   setDisabledElements(announcementFormElements, false);
   setDisabledElements(mapFiltersFormElements, false);
 };
 
-export { activeState, inactiveState, activateMapFilters };
+export { setInactiveState, setActiveState, activateMapFilters };
 

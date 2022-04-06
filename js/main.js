@@ -1,6 +1,6 @@
 import '../js/slider.js';
 import  { errorHandler } from '../js/form/form.js';
-import { inactiveState, activateMapFilters } from '../js/form/form-helpers.js';
+import { setInactiveState, activateMapFilters } from '../js/form/form-helpers.js';
 import { renderAnnouncements, removeAllMarkers, activateMap } from '../js/map.js';
 import { getData } from '../js/api.js';
 import '../js/loader.js';
@@ -27,7 +27,7 @@ const renderData = () => {
   );
 };
 
-inactiveState();
+setInactiveState();
 activateMap(renderData);
 
 filtersBlock.addEventListener('change', debounce(updateAnnouncements, RERENDER_DELAY), true);
