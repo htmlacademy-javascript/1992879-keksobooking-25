@@ -1,11 +1,16 @@
 import { HOUSE_MIN_PRICE_VALUE, HOUSE_MAX_PRICE_VALUE, RoomsCapacityMap, ERROR_VALIDATION_TEXT } from './form-constants.js';
 import { sendData } from '../api.js';
 import { mainPinMarker, setAddressFieldValue, map } from '../map.js';
-import { POPUP_MESSAGE } from '../constants.js';
+import { POPUP_MESSAGE, MAIN_MARKER_COORDINATE } from '../constants.js';
 import { getTemplateNode, isEscapeKey } from '../util.js';
 import { resetSlider } from '../slider.js';
 import { removePhotos } from '../loader.js';
 import { resetAllFilters } from '../filters.js';
+
+const TITLE_VALUE_LENGTH = {
+  MIN: 30,
+  MAX: 100
+};
 
 const announcementForm = document.querySelector('.ad-form');
 const titleField = announcementForm.querySelector('#title');
@@ -29,7 +34,7 @@ const pristine = new Pristine(announcementForm, {
   errorTextClass: 'form__error'
 });
 
-const validateTitle = (value) => value.length >= 30 && value.length <= 100;
+const validateTitle = (value) => value.length >= TITLE_VALUE_LENGTH.MIN && value.length <= TITLE_VALUE_LENGTH.MAX;
 const validateMinPrice = (value) => value >= HOUSE_MIN_PRICE_VALUE[houseTypeField.value];
 const validateMaxPrice = (value) => value <= HOUSE_MAX_PRICE_VALUE;
 const validateRoomNumber = (value) => RoomsCapacityMap[roomNumberField.value].guests.includes(value);
@@ -114,7 +119,7 @@ const successHandler = () => {
 
 const resetForm = () => {
   announcementForm.reset();
-  mainPinMarker.setLatLng([35.68281, 139.75949,]).update();
+  mainPinMarker.setLatLng([MAIN_MARKER_COORDINATE.LAT, MAIN_MARKER_COORDINATE.LNG,]).update();
   setAddressFieldValue();
   map.closePopup();
   resetSlider();

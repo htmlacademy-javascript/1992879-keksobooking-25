@@ -1,8 +1,8 @@
-import { activeState } from '../js/form/form-helpers.js';
+import { setActiveState } from '../js/form/form-helpers.js';
 import { renderCard } from './card.js';
+import { MAIN_MARKER_COORDINATE } from '../js/constants.js';
 
-const addressFild = document.querySelector('#address');
-
+const addressField = document.querySelector('#address');
 const map = L.map('map-canvas');
 let mapMarkers  = [];
 
@@ -20,8 +20,8 @@ const commonPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: 35.68281,
-    lng: 139.75949,
+    lat: MAIN_MARKER_COORDINATE.LAT,
+    lng: MAIN_MARKER_COORDINATE.LNG,
   },
   {
     draggable: true,
@@ -31,12 +31,12 @@ const mainPinMarker = L.marker(
 
 const activateMap = (success) => {
   map.on('load', () => {
-    activeState();
+    setActiveState();
     success();
   })
     .setView({
-      lat: 35.68281,
-      lng: 139.75949,
+      lat: MAIN_MARKER_COORDINATE.LAT,
+      lng: MAIN_MARKER_COORDINATE.LNG,
     }, 12);
 
   L.tileLayer (
@@ -66,7 +66,7 @@ const renderAnnouncements = (announcements) => {
 };
 
 const setAddressFieldValue = () => {
-  addressFild.value = `${mainPinMarker.getLatLng().lat} ${mainPinMarker.getLatLng().lng}`;
+  addressField.value = `${mainPinMarker.getLatLng().lat} ${mainPinMarker.getLatLng().lng}`;
 };
 
 const removeAllMarkers = () => {
@@ -82,7 +82,7 @@ mainPinMarker.on('moveend', (event) => {
   const coordinate = event.target.getLatLng();
   const coordLng = coordinate.lng.toFixed(5);
   const coordLat = coordinate.lat.toFixed(5);
-  addressFild.value = `${coordLat} ${coordLng}`;
+  addressField.value = `${coordLat} ${coordLng}`;
 });
 
 export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map, removeAllMarkers, activateMap };
