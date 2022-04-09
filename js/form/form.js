@@ -1,6 +1,6 @@
 import { HOUSE_MIN_PRICE_VALUE, HOUSE_MAX_PRICE_VALUE, RoomsCapacityMap, ERROR_VALIDATION_TEXT } from './form-constants.js';
 import { sendData } from '../api.js';
-import { mainPinMarker, setAddressFieldValue, map } from '../map.js';
+import { mainPinMarker, setAddressFieldValue, map, setMapView } from '../map.js';
 import { POPUP_MESSAGE, MAIN_MARKER_COORDINATE } from '../constants.js';
 import { getTemplateNode, isEscapeKey } from '../util.js';
 import { resetSlider } from '../slider.js';
@@ -43,8 +43,12 @@ const getMinPriceErrorMessage = () => `${ERROR_VALIDATION_TEXT.PRICE_MIN} ${HOUS
 const getMaxPriceErrorMessage = () => `${ERROR_VALIDATION_TEXT.PRICE_MAX} ${HOUSE_MAX_PRICE_VALUE}`;
 const getRoomsNumberErrorMessage = () => RoomsCapacityMap[roomNumberField.value].messageError;
 
-const onPriceChange = () => {
+const updatePriceFieldPlaceholder = () => {
   priceField.placeholder = HOUSE_MIN_PRICE_VALUE[houseTypeField.value];
+};
+
+const onPriceChange = () => {
+  updatePriceFieldPlaceholder();
   pristine.validate(priceField);
 };
 
@@ -76,10 +80,10 @@ timeOut.addEventListener('change', validateTimeIn);
 const closeByEscapeHandler  =  (event) => {
   if (isEscapeKey(event)) {
     if (elError) {
-      elError.removeEventListener('keydown', closeByEscapeHandler );
+      document.removeEventListener('keydown', closeByEscapeHandler);
       elError.remove();
-    } else if(elSuccess) {
-      elSuccess.removeEventListener('keydown', closeByEscapeHandler );
+    } else if (elSuccess) {
+      document.removeEventListener('keydown', closeByEscapeHandler);
       elSuccess.remove();
     }
   }
@@ -102,7 +106,7 @@ const errorHandler = (message) => () => {
   const elErrorButton = elError.querySelector('.error__button');
 
   elMain.insertBefore(elError, elMain.firstChild);
-  document.addEventListener('keydown', closeByEscapeHandler );
+  document.addEventListener('keydown', closeByEscapeHandler);
   elErrorButton.addEventListener('click', closeByClickHandler);
   elError.addEventListener('click', closeByClickHandler);
 };
@@ -113,18 +117,20 @@ const successHandler = () => {
   elSuccessMessage.innerText = POPUP_MESSAGE.SUCCESS_FORM;
 
   elMain.insertBefore(elSuccess, elMain.firstChild);
-  document.addEventListener('keydown', closeByEscapeHandler );
+  document.addEventListener('keydown', closeByEscapeHandler);
   elSuccess.addEventListener('click', closeByClickHandler);
 };
 
 const resetForm = () => {
   announcementForm.reset();
-  mainPinMarker.setLatLng([MAIN_MARKER_COORDINATE.LAT, MAIN_MARKER_COORDINATE.LNG,]).update();
-  setAddressFieldValue();
+  mainPinMarker.setLatLng([MAIN_MARKER_COORDINATE.LAT, MAIN_MARKER_COORDINATE.LNG]).update();
   map.closePopup();
   resetSlider();
   removePhotos();
   resetAllFilters();
+  setAddressFieldValue();
+  updatePriceFieldPlaceholder();
+  setMapView();
 };
 
 const setInitialState = () => {
@@ -132,7 +138,10 @@ const setInitialState = () => {
   successHandler();
 };
 
-adFormReset.addEventListener('click', resetForm);
+adFormReset.addEventListener('click', (event) => {
+  event.preventDefault();
+  resetForm();
+});
 
 const setUserFormSubmit = (onSuccess, onFail) => {
   announcementForm.addEventListener('submit', (event) => {

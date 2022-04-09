@@ -18,7 +18,7 @@ const houseTypeFilterHandler = ({offer: { type } }) => {
   if(!type) {
     return false;
   }
-  return houseTypeFilter.value === VALUE_ANY ? true : type === houseTypeFilter.value;
+  return houseTypeFilter.value === VALUE_ANY || type === houseTypeFilter.value;
 };
 
 const isMiddleCondition = (price) => {
@@ -43,7 +43,7 @@ const priceFilterHandler = ({offer: { price } }) => {
   if(!price) {
     return false;
   }
-  return housePriceFilter.value === VALUE_ANY ? true : (
+  return housePriceFilter.value === VALUE_ANY || (
     isMiddleCondition(price) ||
     isLowCondition(price) ||
     isHighCondition(price)
@@ -54,12 +54,12 @@ const roomsFilterHandler = ({offer: { rooms } }) => {
   if(!rooms) {
     return false;
   }
-  return houseRoomsFilter.value === VALUE_ANY ? true : rooms === +houseRoomsFilter.value;
+  return houseRoomsFilter.value === VALUE_ANY || rooms === +houseRoomsFilter.value;
 };
 
 const guestsFilterHandler = ({offer: { guests } }) => {
   if(guests >= 0) {
-    return houseGuestsFilter.value === VALUE_ANY ? true : guests === +houseGuestsFilter.value;
+    return houseGuestsFilter.value === VALUE_ANY || guests === +houseGuestsFilter.value;
   }
   return false;
 };
@@ -71,7 +71,7 @@ const featuresFilterHandler = (filterCheckbox, {offer: { features } }) => {
   return filterCheckbox.checked ? features.includes(filterCheckbox.value) : true;
 };
 
-const announcementsFilterHandler =  (data) => data.slice().filter((announcement) =>
+const announcementsFilterHandler =  (data) => data.filter((announcement) =>
   houseTypeFilterHandler(announcement) &&
     priceFilterHandler(announcement) &&
     roomsFilterHandler(announcement) &&
