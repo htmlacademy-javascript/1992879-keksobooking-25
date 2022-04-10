@@ -29,15 +29,19 @@ const mainPinMarker = L.marker(
   },
 );
 
+const setMapView = () => {
+  map.setView({
+    lat: MAIN_MARKER_COORDINATE.LAT,
+    lng: MAIN_MARKER_COORDINATE.LNG,
+  }, 12);
+};
+
 const activateMap = (success) => {
   map.on('load', () => {
     setActiveState();
     success();
-  })
-    .setView({
-      lat: MAIN_MARKER_COORDINATE.LAT,
-      lng: MAIN_MARKER_COORDINATE.LNG,
-    }, 12);
+  });
+  setMapView();
 
   L.tileLayer (
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -78,11 +82,11 @@ const removeAllMarkers = () => {
 mainPinMarker.addTo(map);
 setAddressFieldValue();
 
-mainPinMarker.on('moveend', (event) => {
+mainPinMarker.on('move', (event) => {
   const coordinate = event.target.getLatLng();
   const coordLng = coordinate.lng.toFixed(5);
   const coordLat = coordinate.lat.toFixed(5);
   addressField.value = `${coordLat} ${coordLng}`;
 });
 
-export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map, removeAllMarkers, activateMap };
+export { renderAnnouncements, mainPinMarker, setAddressFieldValue, map, removeAllMarkers, activateMap, setMapView };
